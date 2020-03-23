@@ -1,118 +1,191 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import {Text, Input, Icon, Card, Button} from 'react-native-elements';
+import {Grid, Row, Col} from 'react-native-easy-grid';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-declare var global: {HermesInternal: null | {}};
-
-const App = () => {
+const Home = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}
           style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
+          <Grid>
+            <Row>
+              <Text h2>Hola Pablo,</Text>
+            </Row>
+            <Row style={styles.row}>
+              <Text h2>¿Qué ingredientes quieres consultar?</Text>
+            </Row>
+            <Row style={styles.row}>
+              <Col size={90}>
+                <Input placeholder="Escribe algo..." />
+              </Col>
+              <Col size={10}>
+                <Icon
+                  name="search"
+                  type="evilicon"
+                  containerStyle={styles.searchButton}
+                />
+              </Col>
+            </Row>
+            <Row style={styles.row}>
+              <Text style={styles.boldText}>Buscados anteriormente:</Text>
+            </Row>
+            <Row style={styles.row}>
+              <ScrollView
+                alwaysBounceHorizontal
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.horizontalScrollView}>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    containerStyle={styles.card}>
+                    <Text style={styles.cardText}>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Cum voluptates doloremque perferendis.
+                    </Text>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    containerStyle={styles.card}>
+                    <Text style={styles.cardText}>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Cum voluptates doloremque perferendis.
+                    </Text>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    containerStyle={styles.card}>
+                    <Text style={styles.cardText}>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Cum voluptates doloremque perferendis.
+                    </Text>
+                  </Card>
+                </Col>
+              </ScrollView>
+            </Row>
+            <Row style={styles.row}>
+              <Text style={styles.boldText}>
+                Artículos APV Agregados recientemente:
               </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
+            </Row>
+            <Row style={styles.row}>
+              <ScrollView
+                alwaysBounceHorizontal
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.horizontalScrollView}>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    imageStyle={styles.productCardImage}
+                    containerStyle={styles.productCard}>
+                    <Text style={styles.cardText}>Lorem ipsum</Text>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    imageStyle={styles.productCardImage}
+                    containerStyle={styles.productCard}>
+                    <Text style={styles.cardText}>Lorem ipsum</Text>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    imageStyle={styles.productCardImage}
+                    containerStyle={styles.productCard}>
+                    <Text style={styles.cardText}>Lorem ipsum</Text>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    image={{uri: 'https://via.placeholder.com/150'}}
+                    imageStyle={styles.productCardImage}
+                    containerStyle={styles.productCard}>
+                    <Text style={styles.cardText}>Lorem ipsum</Text>
+                  </Card>
+                </Col>
+              </ScrollView>
+            </Row>
+          </Grid>
         </ScrollView>
+        <Grid>
+          <Row>
+            <Col style={styles.scanButtonContainer}>
+              <Button
+                buttonStyle={styles.scanButton}
+                icon={
+                  <Icon name="camera" type="evilicon" size={52} color="white" />
+                }
+              />
+            </Col>
+          </Row>
+        </Grid>
       </SafeAreaView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'white',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  scrollView: {
+    backgroundColor: 'white',
+    padding: 10,
+    paddingBottom: 24,
+    height: '90%',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  row: {
+    paddingBottom: 26,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  card: {
+    width: 200,
   },
-  highlight: {
-    fontWeight: '700',
+  productCard: {
+    width: 100,
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  productCardImage: {
+    width: 100,
+    height: 100,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  cardText: {
+    marginBottom: 10,
+  },
+  searchButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  horizontalScrollView: {},
+  scanButtonContainer: {
+    backgroundColor: 'white',
+    height: 100,
+    marginBottom: 12,
+    paddingTop: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // position: 'absolute',
+    // right: '50%',
+    // marginRight: -37,
+    // bottom: 32,
+  },
+  scanButton: {
+    borderRadius: 50,
+    width: 68,
   },
 });
 
-export default App;
+export default Home;

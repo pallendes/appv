@@ -6,7 +6,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        paths: ['src'],
+        paths: ['./src'],
         alias: {
           '@assets': './src/assets',
           '@components': './src/components',
