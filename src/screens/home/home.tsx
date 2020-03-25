@@ -2,8 +2,16 @@ import React from 'react';
 import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import {Text, Input, Icon, Card, Button} from 'react-native-elements';
 import {Grid, Row, Col} from 'react-native-easy-grid';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '@navigations/root-navigator';
 
-const Home = () => {
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+interface HomeProps {
+  navigation: HomeScreenNavigationProp;
+}
+
+const Home = ({navigation}: HomeProps) => {
   return (
     <>
       <SafeAreaView>
@@ -122,6 +130,9 @@ const Home = () => {
           <Row>
             <Col style={styles.scanButtonContainer}>
               <Button
+                accessible
+                accessibilityLabel="Abrir camara"
+                onPress={() => navigation.navigate('Capture')}
                 buttonStyle={styles.scanButton}
                 icon={
                   <Icon name="camera" type="evilicon" size={52} color="white" />

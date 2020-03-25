@@ -1,14 +1,25 @@
-/**
- * @format
- */
-
 import 'react-native';
 import React from 'react';
 import {Home} from '../';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+import {render, fireEvent} from 'react-native-testing-library';
 
-it('renders correctly', () => {
-  renderer.create(<Home />);
+describe('<Home />', () => {
+  const mockNavigation: any = {
+    navigate: jest.fn(),
+  };
+
+  it('renders correctly', () => {
+    const {getByText} = render(<Home navigation={mockNavigation} />);
+
+    expect(getByText('¿Qué ingredientes quieres consultar?')).toBeTruthy();
+  });
+
+  it('should call the `navigat` function on camera button press', () => {
+    const {getByA11yLabel} = render(<Home navigation={mockNavigation} />);
+
+    fireEvent.press(getByA11yLabel('Abrir camara'));
+
+    expect(mockNavigation.navigate).toHaveBeenCalledTimes(1);
+  });
 });

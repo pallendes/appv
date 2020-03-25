@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1585006243936" clover="3.2.0">
+  <project timestamp="1585006243937" name="All files">
+    <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1" elements="4" coveredelements="4" complexity="0" loc="3" ncloc="3" packages="1" files="2" classes="2"/>
+    <file name="home.tsx" path="/Users/pablo.allendes/Documents/personal_projects/appv/src/screens/home/home.tsx">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="138" count="1" type="stmt"/>
+    </file>
+    <file name="index.ts" path="/Users/pablo.allendes/Documents/personal_projects/appv/src/screens/home/index.ts">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+    </file>
+  </project>
+</coverage>
