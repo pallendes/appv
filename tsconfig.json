@@ -58,7 +58,10 @@
       "@styles/*": ["./src/styles/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
-    // "typeRoots": [],                       /* List of folders to include type definitions from. */
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ] /* List of folders to include type definitions from. */,
     // "types": [],                           /* Type declaration files to be included in compilation. */
     "allowSyntheticDefaultImports": true,
     /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
@@ -79,6 +82,7 @@
     "node_modules",
     "babel.config.js",
     "metro.config.js",
-    "jest.config.js"
+    "jest.config.js",
+    "typings"
   ]
 }

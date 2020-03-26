@@ -3,16 +3,26 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 import {Grid, Col, Row} from 'react-native-easy-grid';
 import {RNCamera} from 'react-native-camera';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../navigations/root-navigator';
 
-export const Capture = () => {
+type CaptureScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Capture'
+>;
+
+interface CaptureProps {
+  navigation: CaptureScreenNavigationProp;
+}
+
+export const Capture = ({navigation}: CaptureProps) => {
   const cameraRef = useRef<RNCamera>(null);
 
   const takePicture = async () => {
     if (cameraRef && cameraRef.current) {
       const options = {quality: 0.5, base64: true};
-      const data = await cameraRef.current.takePictureAsync(options);
-
-      console.log(data.uri);
+      const {uri} = await cameraRef.current.takePictureAsync(options);
+      navigation.navigate('CheckIngredients', {captureUri: uri});
     }
   };
 

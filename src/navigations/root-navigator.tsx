@@ -9,10 +9,12 @@ import {Icon, Avatar} from 'react-native-elements';
 
 import {Home} from '@screens/home';
 import {Capture} from '@screens/capture';
+import {CheckIngredients} from '@screens/check-ingredients';
 
 export type RootStackParamList = {
   Home: undefined;
   Capture: undefined;
+  CheckIngredients: {captureUri: string};
 };
 
 const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
@@ -41,7 +43,6 @@ export const RootNavigator = () => {
             navigation: StackNavigationProp<RootStackParamList, 'Capture'>;
           }) => ({
             title: 'Scanning',
-
             headerLeft: () => (
               <Icon
                 name="chevron-left"
@@ -51,6 +52,11 @@ export const RootNavigator = () => {
               />
             ),
           })}
+        />
+        <Screen
+          name="CheckIngredients"
+          component={CheckIngredients}
+          options={{title: 'Ingredientes no APV'}}
         />
       </Navigator>
     </NavigationContainer>
