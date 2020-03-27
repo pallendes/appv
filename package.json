@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "ios:workspace": "open ios/appv.xcworkspace"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",

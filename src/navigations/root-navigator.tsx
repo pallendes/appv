@@ -14,7 +14,7 @@ import {CheckIngredients} from '@screens/check-ingredients';
 export type RootStackParamList = {
   Home: undefined;
   Capture: undefined;
-  CheckIngredients: {captureUri: string};
+  CheckIngredients: {captureUri: string; recognizedText: string[]};
 };
 
 const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
