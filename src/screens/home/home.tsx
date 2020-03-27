@@ -12,143 +12,148 @@ interface HomeProps {
 }
 
 const Home = ({navigation}: HomeProps) => {
-  return (
-    <>
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollView}>
-          <Grid>
-            <Row>
-              <Text h2>Hola Pablo,</Text>
-            </Row>
-            <Row style={styles.row}>
-              <Text h2>¿Qué ingredientes quieres consultar?</Text>
-            </Row>
-            <Row style={styles.row}>
-              <Col size={90}>
-                <Input placeholder="Escribe algo..." />
-              </Col>
-              <Col size={10}>
-                <Icon
-                  name="search"
-                  type="evilicon"
-                  containerStyle={styles.searchButton}
-                />
-              </Col>
-            </Row>
-            <Row style={styles.row}>
-              <Text style={styles.boldText}>Buscados anteriormente:</Text>
-            </Row>
-            <Row style={styles.row}>
-              <ScrollView
-                alwaysBounceHorizontal
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.horizontalScrollView}>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    containerStyle={styles.card}>
-                    <Text style={styles.cardText}>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Cum voluptates doloremque perferendis.
-                    </Text>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    containerStyle={styles.card}>
-                    <Text style={styles.cardText}>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Cum voluptates doloremque perferendis.
-                    </Text>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    containerStyle={styles.card}>
-                    <Text style={styles.cardText}>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Cum voluptates doloremque perferendis.
-                    </Text>
-                  </Card>
-                </Col>
-              </ScrollView>
-            </Row>
-            <Row style={styles.row}>
-              <Text style={styles.boldText}>
-                Artículos APV Agregados recientemente:
-              </Text>
-            </Row>
-            <Row style={styles.row}>
-              <ScrollView
-                alwaysBounceHorizontal
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.horizontalScrollView}>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    imageStyle={styles.productCardImage}
-                    containerStyle={styles.productCard}>
-                    <Text style={styles.cardText}>Lorem ipsum</Text>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    imageStyle={styles.productCardImage}
-                    containerStyle={styles.productCard}>
-                    <Text style={styles.cardText}>Lorem ipsum</Text>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    imageStyle={styles.productCardImage}
-                    containerStyle={styles.productCard}>
-                    <Text style={styles.cardText}>Lorem ipsum</Text>
-                  </Card>
-                </Col>
-                <Col>
-                  <Card
-                    image={{uri: 'https://via.placeholder.com/150'}}
-                    imageStyle={styles.productCardImage}
-                    containerStyle={styles.productCard}>
-                    <Text style={styles.cardText}>Lorem ipsum</Text>
-                  </Card>
-                </Col>
-              </ScrollView>
-            </Row>
-          </Grid>
-        </ScrollView>
+  const component = (
+    <SafeAreaView>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}>
         <Grid>
-          <Row>
-            <Col style={styles.scanButtonContainer}>
-              <Button
-                accessible
-                accessibilityLabel="Abrir camara"
-                onPress={() => navigation.navigate('Capture')}
-                buttonStyle={styles.scanButton}
-                icon={
-                  <Icon name="camera" type="evilicon" size={52} color="white" />
-                }
+          <Row style={styles.row}>
+            <Text h1 h1Style={styles.title}>
+              Hola Pablo, ¿Qué ingredientes quieres consultar?
+            </Text>
+          </Row>
+          <Row style={styles.row}>
+            <Col size={90}>
+              <Input placeholder="Escribe algo..." />
+            </Col>
+            <Col size={10}>
+              <Icon
+                name="search"
+                type="evilicon"
+                containerStyle={styles.searchButton}
               />
             </Col>
           </Row>
+          <Row style={styles.row}>
+            <Text style={styles.boldText}>Buscados anteriormente:</Text>
+          </Row>
+          <Row style={styles.row}>
+            <ScrollView
+              alwaysBounceHorizontal
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.horizontalScrollView}>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  containerStyle={styles.card}>
+                  <Text style={styles.cardText}>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Cum voluptates doloremque perferendis.
+                  </Text>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  containerStyle={styles.card}>
+                  <Text style={styles.cardText}>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Cum voluptates doloremque perferendis.
+                  </Text>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  containerStyle={styles.card}>
+                  <Text style={styles.cardText}>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Cum voluptates doloremque perferendis.
+                  </Text>
+                </Card>
+              </Col>
+            </ScrollView>
+          </Row>
+          <Row style={styles.row}>
+            <Text style={styles.boldText}>
+              Artículos APV Agregados recientemente:
+            </Text>
+          </Row>
+          <Row style={styles.row}>
+            <ScrollView
+              alwaysBounceHorizontal
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.horizontalScrollView}>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  imageStyle={styles.productCardImage}
+                  containerStyle={styles.productCard}>
+                  <Text style={styles.cardText}>Lorem ipsum</Text>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  imageStyle={styles.productCardImage}
+                  containerStyle={styles.productCard}>
+                  <Text style={styles.cardText}>Lorem ipsum</Text>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  imageStyle={styles.productCardImage}
+                  containerStyle={styles.productCard}>
+                  <Text style={styles.cardText}>Lorem ipsum</Text>
+                </Card>
+              </Col>
+              <Col>
+                <Card
+                  image={{uri: 'https://via.placeholder.com/150'}}
+                  imageStyle={styles.productCardImage}
+                  containerStyle={styles.productCard}>
+                  <Text style={styles.cardText}>Lorem ipsum</Text>
+                </Card>
+              </Col>
+            </ScrollView>
+          </Row>
         </Grid>
-      </SafeAreaView>
-    </>
+      </ScrollView>
+      <Grid>
+        <Row>
+          <Col style={styles.scanButtonContainer}>
+            {/* <ThemeProvider theme={lightTheme}> */}
+            <Button
+              accessible
+              accessibilityLabel="Abrir camara"
+              onPress={() => navigation.navigate('Capture')}
+              buttonStyle={styles.scanButton}
+              icon={
+                <Icon name="camera" type="evilicon" size={52} color="white" />
+              }
+            />
+            {/* </ThemeProvider> */}
+          </Col>
+        </Row>
+      </Grid>
+    </SafeAreaView>
   );
+
+  return component;
 };
 
 const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
   },
   scrollView: {
     backgroundColor: 'white',
@@ -158,6 +163,7 @@ const styles = StyleSheet.create({
   },
   row: {
     paddingBottom: 26,
+    paddingLeft: 12,
   },
   card: {
     width: 200,
