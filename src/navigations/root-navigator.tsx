@@ -11,8 +11,10 @@ import lightTheme from '@styles/theme/light';
 import {Home} from '@screens/home';
 import {Capture} from '@screens/capture';
 import {CheckIngredients} from '@screens/check-ingredients';
+import {Login} from '../screens/login';
 
 export type RootStackParamList = {
+  Login: undefined;
   Home: undefined;
   Capture: undefined;
   CheckIngredients: {captureUri: string; recognizedText: string[]};
@@ -24,7 +26,12 @@ export const RootNavigator = () => {
   return (
     <NavigationContainer>
       <ThemeProvider theme={lightTheme}>
-        <Navigator initialRouteName="Home">
+        <Navigator initialRouteName="Login">
+          <Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
           <Screen
             name="Home"
             component={Home}
