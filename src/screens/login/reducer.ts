@@ -2,6 +2,7 @@ import {createReducer} from 'deox';
 import {setLoginInformation} from './actions';
 
 export interface User {
+  isInitializing: true;
   displayName: string | null;
   email: string | null;
   isAnonymous: boolean;

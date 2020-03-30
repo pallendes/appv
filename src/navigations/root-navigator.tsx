@@ -6,7 +6,7 @@ import {createStore} from 'redux';
 import lightTheme from '@styles/theme/light';
 import rootReducer from '@store/root-reducer';
 
-import {StackNavigator} from './stack-navigator';
+import {DrawerNavigator} from './drawer-navigator';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -22,7 +22,7 @@ export const RootNavigator = () => {
     <NavigationContainer>
       <ThemeProvider theme={lightTheme}>
         <Provider store={store}>
-          <StackNavigator />
+          <DrawerNavigator />
         </Provider>
       </ThemeProvider>
     </NavigationContainer>

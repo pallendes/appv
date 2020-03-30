@@ -5,10 +5,9 @@ import {
 } from '@react-navigation/stack';
 import {StyleSheet} from 'react-native';
 import {Icon, Avatar} from 'react-native-elements';
-
+import {Home} from '@screens/home';
 import {Login} from '@screens/login';
 import {Capture} from '@screens/capture';
-import {Home} from '@screens/home';
 import {CheckIngredients} from '@screens/check-ingredients';
 
 export type RootStackParamList = {
@@ -22,7 +21,7 @@ const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
 
 export const StackNavigator = () => {
   return (
-    <Navigator initialRouteName="Login">
+    <Navigator initialRouteName="Home">
       <Screen name="Login" component={Login} options={{headerShown: false}} />
       <Screen
         name="Home"

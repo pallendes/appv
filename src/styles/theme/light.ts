@@ -1,8 +1,9 @@
 import {Theme} from 'react-native-elements';
+import {Colors} from '../colors';
 
 const theme: Theme = {
   colors: {
-    primary: '#40B659',
+    ...Colors,
   },
   Card: {
     containerStyle: {
