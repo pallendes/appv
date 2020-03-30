@@ -1,10 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, KeyboardAvoidingView, Platform, View} from 'react-native';
 import {Text, Input, Button} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigations/root-navigator';
+import {RootStackParamList} from '@navigations/root-navigator';
+import {RootState} from '@store/root-reducer';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {setLoginInformation} from './actions';
+import * as UserMapper from './mapper';
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -16,22 +20,18 @@ interface LoginProps {
 }
 
 export const Login = ({navigation}: LoginProps) => {
-  const [initializing, setInitializing] = useState<boolean>(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+  const dispatch = useDispatch();
+  const {user} = useSelector((state: RootState) => state.loginReducer);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(
       (userState: FirebaseAuthTypes.User | null) => {
-        setUser(userState);
-
-        if (initializing) {
-          setInitializing(false);
-        }
+        dispatch(setLoginInformation(true, UserMapper.map(userState)));
       },
     );
 
     return subscriber;
-  }, [initializing]);
+  }, [dispatch]);
 
   const enterAsGuest = async () => {
     try {
@@ -39,11 +39,9 @@ export const Login = ({navigation}: LoginProps) => {
     } catch (e) {
       switch (e.code) {
         case 'auth/operation-not-allowed':
-          console.log('Enable anonymous in your firebase console.');
-          break;
+          throw new Error('Enable anonymous in your firebase console.');
         default:
-          console.error(e);
-          break;
+          throw new Error(e);
       }
     }
   };
@@ -52,12 +50,8 @@ export const Login = ({navigation}: LoginProps) => {
     navigation.navigate('Home');
   };
 
-  if (initializing) {
-    return null;
-  }
-
   if (user) {
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   }
 
   return (
