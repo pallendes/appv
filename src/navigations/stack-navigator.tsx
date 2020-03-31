@@ -6,24 +6,22 @@ import {
 import {StyleSheet} from 'react-native';
 import {Icon, Avatar} from 'react-native-elements';
 import {Home} from '@screens/home';
-import {Login} from '@screens/login';
 import {Capture} from '@screens/capture';
 import {CheckIngredients} from '@screens/check-ingredients';
 
-export type RootStackParamList = {
+export type StackNavigatorParamList = {
   Login: undefined;
   Home: undefined;
   Capture: undefined;
   CheckIngredients: {captureUri: string; recognizedText: string[]};
 };
 
-const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<StackNavigatorParamList>();
 
 export const StackNavigator = () => {
   return (
-    <Navigator initialRouteName="Home">
-      <Screen name="Login" component={Login} options={{headerShown: false}} />
-      <Screen
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{
@@ -34,13 +32,13 @@ export const StackNavigator = () => {
           ),
         }}
       />
-      <Screen
+      <Stack.Screen
         name="Capture"
         component={Capture}
         options={({
           navigation,
         }: {
-          navigation: StackNavigationProp<RootStackParamList, 'Capture'>;
+          navigation: StackNavigationProp<StackNavigatorParamList, 'Capture'>;
         }) => ({
           title: 'Scanning',
           headerLeft: () => (
@@ -53,12 +51,12 @@ export const StackNavigator = () => {
           ),
         })}
       />
-      <Screen
+      <Stack.Screen
         name="CheckIngredients"
         component={CheckIngredients}
         options={{title: 'Ingredientes no APV'}}
       />
-    </Navigator>
+    </Stack.Navigator>
   );
 };
 

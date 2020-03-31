@@ -1,30 +1,31 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {RootState} from '@store/root-reducer';
+import {Login} from '@screens/login';
+import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {ThemeProvider} from 'react-native-elements';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import lightTheme from '@styles/theme/light';
-import rootReducer from '@store/root-reducer';
 
 import {DrawerNavigator} from './drawer-navigator';
 
-export type RootStackParamList = {
+type RootStackParamList = {
+  App: undefined;
   Login: undefined;
-  Home: undefined;
-  Capture: undefined;
-  CheckIngredients: {captureUri: string; recognizedText: string[]};
 };
 
-const store = createStore(rootReducer);
+const RootStack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
+  const {isUserLogged} = useSelector((state: RootState) => state.app);
+
   return (
     <NavigationContainer>
-      <ThemeProvider theme={lightTheme}>
-        <Provider store={store}>
-          <DrawerNavigator />
-        </Provider>
-      </ThemeProvider>
+      <RootStack.Navigator headerMode="none">
+        {isUserLogged ? (
+          <RootStack.Screen name="App" component={DrawerNavigator} />
+        ) : (
+          <RootStack.Screen name="Login" component={Login} />
+        )}
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

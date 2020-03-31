@@ -6,9 +6,14 @@ import {
   DrawerContentComponentProps,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {Avatar, Text} from 'react-native-elements';
+import {useDispatch} from 'react-redux';
+import {Avatar, Text, Icon} from 'react-native-elements';
+import {Colors} from '@styles/colors';
+import {userLogout} from '@app-context/actions';
 
 export const CustomDrawer = (props: DrawerContentComponentProps) => {
+  const dispatch = useDispatch();
+
   return (
     <DrawerContentScrollView {...props}>
       <SafeAreaView style={styles.container}>
@@ -26,7 +31,18 @@ export const CustomDrawer = (props: DrawerContentComponentProps) => {
         </View>
         <View style={styles.routes}>
           <DrawerItemList {...props} />
-          <DrawerItem label="Help" onPress={() => null} />
+          <DrawerItem
+            label="Quiero registrarme!"
+            onPress={() => dispatch(userLogout())}
+            icon={() => <Icon name="person-add" color={Colors.primary} />}
+          />
+        </View>
+        <View style={styles.bottomOptions}>
+          <DrawerItem
+            label="Help"
+            onPress={() => null}
+            icon={() => <Icon name="help" color={Colors.primary} />}
+          />
         </View>
       </SafeAreaView>
     </DrawerContentScrollView>
@@ -49,6 +65,12 @@ const styles = StyleSheet.create({
   },
   routes: {
     flex: 5,
+  },
+  bottomOptions: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
   },
   avatar: {
     margin: 12,

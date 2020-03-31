@@ -15,6 +15,7 @@ module.exports = {
           '@screens': './src/screens',
           '@services': './src/services',
           '@styles': './src/styles',
+          '@app-context': './src/app-context',
         },
       },
     },

@@ -1,17 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, KeyboardAvoidingView, Platform, View} from 'react-native';
 import {Text, Input, Button} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '@navigations/root-navigator';
+import auth from '@react-native-firebase/auth';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
+import {useSelector, useDispatch} from 'react-redux';
+import {setUserInformation} from '@app-context/actions';
 import {RootState} from '@store/root-reducer';
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {useDispatch, useSelector} from 'react-redux';
-import {setLoginInformation} from './actions';
-import * as UserMapper from './mapper';
 
 type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  StackNavigatorParamList,
   'Login'
 >;
 
@@ -21,21 +20,15 @@ interface LoginProps {
 
 export const Login = ({navigation}: LoginProps) => {
   const dispatch = useDispatch();
-  const {user} = useSelector((state: RootState) => state.loginReducer);
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(
-      (userState: FirebaseAuthTypes.User | null) => {
-        dispatch(setLoginInformation(true, UserMapper.map(userState)));
-      },
-    );
-
-    return subscriber;
-  }, [dispatch]);
+  const {userInformation} = useSelector((state: RootState) => state.app);
 
   const enterAsGuest = async () => {
     try {
-      await auth().signInAnonymously();
+      if (userInformation) {
+        dispatch(setUserInformation(userInformation));
+      } else {
+        await auth().signInAnonymously();
+      }
     } catch (e) {
       switch (e.code) {
         case 'auth/operation-not-allowed':
@@ -49,10 +42,6 @@ export const Login = ({navigation}: LoginProps) => {
   const handleLoginPress = () => {
     navigation.navigate('Home');
   };
-
-  if (user) {
-    // navigation.navigate('Home');
-  }
 
   return (
     <View style={styles.container}>
