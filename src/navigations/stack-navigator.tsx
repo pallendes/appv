@@ -8,6 +8,8 @@ import {Icon, Avatar} from 'react-native-elements';
 import {Home} from '@screens/home';
 import {Capture} from '@screens/capture';
 import {CheckIngredients} from '@screens/check-ingredients';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {DrawerStackParamList} from './drawer-navigator/drawer-navigator';
 
 export type StackNavigatorParamList = {
   Login: undefined;
@@ -18,7 +20,11 @@ export type StackNavigatorParamList = {
 
 const Stack = createStackNavigator<StackNavigatorParamList>();
 
-export const StackNavigator = () => {
+interface StackNavigatorProps {
+  navigation: DrawerNavigationProp<DrawerStackParamList>;
+}
+
+export const StackNavigator = (props: StackNavigatorProps) => {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
@@ -26,7 +32,14 @@ export const StackNavigator = () => {
         component={Home}
         options={{
           title: '',
-          headerLeft: () => <Icon name="navicon" type="evilicon" size={42} />,
+          headerLeft: () => (
+            <Icon
+              name="navicon"
+              type="evilicon"
+              size={42}
+              onPress={() => props.navigation.openDrawer()}
+            />
+          ),
           headerRight: () => (
             <Avatar rounded title="PA" containerStyle={styles.avatar} />
           ),

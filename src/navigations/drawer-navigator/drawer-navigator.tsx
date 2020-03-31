@@ -6,7 +6,7 @@ import {Colors} from '@styles/colors';
 import {StackNavigator} from '../stack-navigator';
 import {CustomDrawer} from './custom-drawer';
 
-type DrawerStackParamList = {
+export type DrawerStackParamList = {
   Home: undefined;
 };
 

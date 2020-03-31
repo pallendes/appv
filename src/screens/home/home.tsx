@@ -3,9 +3,12 @@ import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import {Text, Input, Icon, Card, Button} from 'react-native-elements';
 import {Grid, Row, Col} from 'react-native-easy-grid';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '@navigations/root-navigator';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<
+  StackNavigatorParamList,
+  'Home'
+>;
 
 interface HomeProps {
   navigation: HomeScreenNavigationProp;
@@ -25,16 +28,16 @@ const Home = ({navigation}: HomeProps) => {
             </Text>
           </Row>
           <Row style={styles.row}>
-            <Col size={90}>
-              <Input placeholder="Escribe algo..." />
-            </Col>
-            <Col size={10}>
-              <Icon
-                name="search"
-                type="evilicon"
-                containerStyle={styles.searchButton}
-              />
-            </Col>
+            <Input
+              placeholder="Escribe algo..."
+              rightIcon={
+                <Icon
+                  name="search"
+                  type="evilicon"
+                  containerStyle={styles.searchButton}
+                />
+              }
+            />
           </Row>
           <Row style={styles.row}>
             <Text style={styles.boldText}>Buscados anteriormente:</Text>
@@ -185,6 +188,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center',
   },
   horizontalScrollView: {},
   scanButtonContainer: {
