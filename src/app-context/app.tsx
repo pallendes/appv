@@ -14,7 +14,10 @@ export const App = () => {
     const subscriber = auth().onAuthStateChanged(
       (userState: FirebaseAuthTypes.User | null) => {
         dispatch(setUserInformation(userState));
-        dispatch(setLoadingState(false));
+
+        setTimeout(() => {
+          dispatch(setLoadingState(false));
+        }, 1000);
       },
     );
 
