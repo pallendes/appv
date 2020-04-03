@@ -2,11 +2,11 @@ import React from 'react';
 import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import {Image, Text, Divider} from 'react-native-elements';
 import {Grid, Row} from 'react-native-easy-grid';
-import {RootStackParamList} from '../../navigations/root-navigator';
 import {RouteProp} from '@react-navigation/native';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
 
 type CheckIngredientsScreenRouteProp = RouteProp<
-  RootStackParamList,
+  StackNavigatorParamList,
   'CheckIngredients'
 >;
 
@@ -29,14 +29,10 @@ export const CheckIngredients = ({route}: CheckIngredientsProps) => {
             <Row>
               <Text h2>Lista de ingredientes:</Text>
             </Row>
-            {route.params.recognizedText.map(text => (
-              <>
-                <Row style={styles.textRow}>
-                  <Text>{text}</Text>
-                </Row>
-                <Divider />
-              </>
-            ))}
+            <Row style={styles.textRow}>
+              <Text>{route.params.recognizedText}</Text>
+            </Row>
+            <Divider />
           </ScrollView>
         </Row>
       </Grid>

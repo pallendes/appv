@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {Button, Icon, Text} from 'react-native-elements';
-import {Grid, Col, Row} from 'react-native-easy-grid';
+import {StyleSheet, View} from 'react-native';
+import {Grid, Row} from 'react-native-easy-grid';
 import {RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigations/root-navigator';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
+import {Colors} from '@styles/colors';
+import {ProgressBox} from '@atoms/progress-box';
 
 type CaptureScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  StackNavigatorParamList,
   'Capture'
 >;
 
@@ -17,14 +18,16 @@ interface CaptureProps {
 
 export const Capture = ({navigation}: CaptureProps) => {
   const cameraRef = useRef<RNCamera>(null);
-  const [trackedText, setTrackedText] = useState<TrackedTextFeature[]>([]);
+  const [trackedText, setTrackedText] = useState<TrackedTextFeature | null>(
+    null,
+  );
 
   const takePicture = async () => {
-    if (cameraRef && cameraRef.current) {
+    if (trackedText && cameraRef && cameraRef.current) {
       const options = {quality: 0.5, base64: true};
       const {uri} = await cameraRef.current.takePictureAsync(options);
 
-      const recognizedText = trackedText.map(item => item.value);
+      const recognizedText = trackedText?.value;
 
       navigation.navigate('CheckIngredients', {
         captureUri: uri,
@@ -33,56 +36,71 @@ export const Capture = ({navigation}: CaptureProps) => {
     }
   };
 
-  const renderTextBlocks = () => (
-    <View style={styles.facesContainer} pointerEvents="none">
-      {trackedText.map(renderTextBlock)}
-    </View>
-  );
+  const filterIngredients = (textBlock: string): boolean => {
+    const normalizedText = textBlock.toLowerCase();
 
-  const renderTextBlock = ({
-    bounds,
-    value,
-  }: Pick<TrackedTextFeature, 'bounds' | 'value'>) => (
-    <React.Fragment key={value + bounds.origin.x}>
-      <Text
-        style={[
-          styles.textBlock,
-          {left: bounds.origin.x, top: bounds.origin.y},
-        ]}
-      />
-      <View
-        style={[
-          styles.text,
-          {
-            ...bounds.size,
-            left: bounds.origin.x,
-            top: bounds.origin.y,
-          },
-        ]}
-      />
-    </React.Fragment>
-  );
+    const comparationWords = ['ingredients', 'ingredientes'];
+
+    return comparationWords
+      .map(
+        (comparationWord: string) =>
+          normalizedText.indexOf(comparationWord) !== -1,
+      )
+      .reduce((prevResult, currentResult) => prevResult || currentResult);
+  };
+
+  const renderTextBlocks = () => {
+    if (!trackedText) {
+      return null;
+    }
+
+    const {bounds} = trackedText;
+
+    return (
+      <View style={styles.facesContainer} pointerEvents="none">
+        <View
+          style={[
+            styles.text,
+            {
+              ...bounds.size,
+              left: bounds.origin.x,
+              top: bounds.origin.y,
+            },
+          ]}
+        />
+      </View>
+    );
+  };
 
   const onTextRecognized = ({
     textBlocks,
   }: {
     textBlocks: TrackedTextFeature[];
   }): void => {
-    setTrackedText(textBlocks);
+    const filteredBlocks = textBlocks.filter(item =>
+      filterIngredients(item.value),
+    );
+
+    if (filteredBlocks.length > 0) {
+      setTrackedText(filteredBlocks[0]);
+      takePicture();
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Grid>
-        <Row size={90}>
+        <Row>
           <RNCamera
             ref={cameraRef}
             style={styles.cameraContainer}
             onTextRecognized={onTextRecognized}
+            flashMode="auto"
+            autoFocus="on"
           />
           {renderTextBlocks()}
         </Row>
-        <Row size={10}>
+        {/* <Row size={10}>
           <Col style={styles.scanButtonContainer}>
             <Button
               accessible
@@ -94,15 +112,17 @@ export const Capture = ({navigation}: CaptureProps) => {
               }
             />
           </Col>
-        </Row>
+        </Row> */}
       </Grid>
-    </SafeAreaView>
+      <ProgressBox />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   scanButtonContainer: {
     backgroundColor: 'white',
@@ -134,11 +154,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   text: {
-    // padding: 10,
     borderWidth: 2,
-    borderRadius: 2,
+    borderRadius: 12,
     position: 'absolute',
-    borderColor: '#F00',
+    borderColor: Colors.primary,
     justifyContent: 'center',
   },
 });

@@ -11,6 +11,8 @@ module.exports = {
           '@assets': './src/assets',
           '@components': './src/components',
           '@atoms': './src/components/atoms',
+          '@molecules': './src/components/molecules',
+          '@organisms': './src/components/organisms',
           '@navigations': './src/navigations',
           '@screens': './src/screens',
           '@services': './src/services',

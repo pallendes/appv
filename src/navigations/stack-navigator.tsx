@@ -15,7 +15,7 @@ export type StackNavigatorParamList = {
   Login: undefined;
   Home: undefined;
   Capture: undefined;
-  CheckIngredients: {captureUri: string; recognizedText: string[]};
+  CheckIngredients: {captureUri: string; recognizedText: string};
 };
 
 const Stack = createStackNavigator<StackNavigatorParamList>();
@@ -31,7 +31,6 @@ export const StackNavigator = (props: StackNavigatorProps) => {
         name="Home"
         component={Home}
         options={{
-          title: '',
           headerLeft: () => (
             <Icon
               name="navicon"
@@ -53,11 +52,14 @@ export const StackNavigator = (props: StackNavigatorProps) => {
         }: {
           navigation: StackNavigationProp<StackNavigatorParamList, 'Capture'>;
         }) => ({
+          headerTransparent: true,
           title: 'Scanning',
+          headerTintColor: 'white',
           headerLeft: () => (
             <Icon
               name="chevron-left"
               type="evilicon"
+              color="white"
               size={42}
               onPress={() => navigation.goBack()}
             />
