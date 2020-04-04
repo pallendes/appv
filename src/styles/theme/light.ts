@@ -14,6 +14,24 @@ const theme: Theme = {
       overflow: 'hidden',
     },
   },
+  Text: {
+    style: {
+      fontWeight: '400',
+      fontFamily: 'Oswald-Regular',
+    },
+    h1Style: {
+      fontWeight: 'bold',
+    },
+    h2Style: {
+      fontWeight: 'bold',
+    },
+    h3Style: {
+      fontWeight: 'bold',
+    },
+    h4Style: {
+      fontWeight: 'bold',
+    },
+  },
 };
 
 export default theme;

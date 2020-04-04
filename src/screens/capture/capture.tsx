@@ -5,7 +5,7 @@ import {RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {StackNavigatorParamList} from '@navigations/stack-navigator';
 import {Colors} from '@styles/colors';
-import {ProgressBox} from '@atoms/progress-box';
+import {Button, Icon} from 'react-native-elements';
 
 type CaptureScreenNavigationProp = StackNavigationProp<
   StackNavigatorParamList,
@@ -18,16 +18,22 @@ interface CaptureProps {
 
 export const Capture = ({navigation}: CaptureProps) => {
   const cameraRef = useRef<RNCamera>(null);
-  const [trackedText, setTrackedText] = useState<TrackedTextFeature | null>(
+  const [trackedText, setTrackedText] = useState<TrackedTextFeature[] | null>(
     null,
   );
+  const [isScanning, setIsScanning] = useState<boolean>(false);
 
   const takePicture = async () => {
     if (trackedText && cameraRef && cameraRef.current) {
       const options = {quality: 0.5, base64: true};
       const {uri} = await cameraRef.current.takePictureAsync(options);
 
-      const recognizedText = trackedText?.value;
+      const recognizedText = trackedText.map(
+        (item: TrackedTextFeature) => item.value,
+      );
+
+      setIsScanning(false);
+      setTrackedText(null);
 
       navigation.navigate('CheckIngredients', {
         captureUri: uri,
@@ -36,38 +42,34 @@ export const Capture = ({navigation}: CaptureProps) => {
     }
   };
 
-  const filterIngredients = (textBlock: string): boolean => {
-    const normalizedText = textBlock.toLowerCase();
-
-    const comparationWords = ['ingredients', 'ingredientes'];
-
-    return comparationWords
-      .map(
-        (comparationWord: string) =>
-          normalizedText.indexOf(comparationWord) !== -1,
-      )
-      .reduce((prevResult, currentResult) => prevResult || currentResult);
-  };
-
   const renderTextBlocks = () => {
-    if (!trackedText) {
+    if (!trackedText || trackedText.length === 0) {
       return null;
     }
 
-    const {bounds} = trackedText;
-
     return (
-      <View style={styles.facesContainer} pointerEvents="none">
-        <View
-          style={[
-            styles.text,
-            {
-              ...bounds.size,
-              left: bounds.origin.x,
-              top: bounds.origin.y,
-            },
-          ]}
-        />
+      <View style={styles.reconizedTextContainer} pointerEvents="none">
+        {trackedText.map((item: TrackedTextFeature) => {
+          const {bounds, value} = item;
+
+          const isIngredientsBlock =
+            value.toLowerCase().includes('ingredients') ||
+            value.toLocaleLowerCase().includes('ingredientes');
+
+          return (
+            <View
+              style={[
+                styles.reconizedText,
+                isIngredientsBlock && styles.ingredientsText,
+                {
+                  ...bounds.size,
+                  left: bounds.origin.x,
+                  top: bounds.origin.y,
+                },
+              ]}
+            />
+          );
+        })}
       </View>
     );
   };
@@ -77,14 +79,8 @@ export const Capture = ({navigation}: CaptureProps) => {
   }: {
     textBlocks: TrackedTextFeature[];
   }): void => {
-    const filteredBlocks = textBlocks.filter(item =>
-      filterIngredients(item.value),
-    );
-
-    if (filteredBlocks.length > 0) {
-      setTrackedText(filteredBlocks[0]);
-      takePicture();
-    }
+    setTrackedText(textBlocks);
+    takePicture();
   };
 
   return (
@@ -94,27 +90,22 @@ export const Capture = ({navigation}: CaptureProps) => {
           <RNCamera
             ref={cameraRef}
             style={styles.cameraContainer}
-            onTextRecognized={onTextRecognized}
+            onTextRecognized={isScanning ? onTextRecognized : undefined}
             flashMode="auto"
             autoFocus="on"
           />
           {renderTextBlocks()}
         </Row>
-        {/* <Row size={10}>
-          <Col style={styles.scanButtonContainer}>
-            <Button
-              accessible
-              accessibilityLabel="Capturar imagen"
-              buttonStyle={styles.scanButton}
-              onPress={takePicture}
-              icon={
-                <Icon name="camera" type="evilicon" size={52} color="white" />
-              }
-            />
-          </Col>
-        </Row> */}
       </Grid>
-      <ProgressBox />
+      <Button
+        accessible
+        accessibilityLabel="Capturar imagen"
+        buttonStyle={styles.scanButton}
+        containerStyle={styles.scanButtonContainer}
+        onPress={() => setIsScanning(true)}
+        loading={isScanning}
+        icon={<Icon name="ios-home" size={52} color="white" />}
+      />
     </View>
   );
 };
@@ -125,39 +116,40 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   scanButtonContainer: {
-    backgroundColor: 'white',
-    height: 100,
-    marginBottom: 12,
-    paddingTop: 12,
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    marginBottom: 54,
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
   },
   scanButton: {
-    borderRadius: 50,
-    width: 68,
+    borderWidth: 4,
+    borderColor: 'white',
+    borderRadius: 160,
+    width: 80,
+    height: 80,
   },
   cameraContainer: {
     flex: 1,
     width: 1,
   },
-  facesContainer: {
+  reconizedTextContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
     top: 0,
   },
-  textBlock: {
-    color: '#F00',
-    position: 'absolute',
-    textAlign: 'center',
-    backgroundColor: 'transparent',
-  },
-  text: {
-    borderWidth: 2,
+  reconizedText: {
+    borderWidth: 4,
     borderRadius: 12,
     position: 'absolute',
-    borderColor: Colors.primary,
+    borderColor: 'red',
     justifyContent: 'center',
+  },
+  ingredientsText: {
+    borderColor: Colors.primary,
   },
 });

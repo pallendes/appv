@@ -10,12 +10,13 @@ import {Capture} from '@screens/capture';
 import {CheckIngredients} from '@screens/check-ingredients';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {DrawerStackParamList} from './drawer-navigator/drawer-navigator';
+import {FontFamily} from '@styles/font-family';
 
 export type StackNavigatorParamList = {
   Login: undefined;
   Home: undefined;
   Capture: undefined;
-  CheckIngredients: {captureUri: string; recognizedText: string};
+  CheckIngredients: {captureUri: string; recognizedText: string | string[]};
 };
 
 const Stack = createStackNavigator<StackNavigatorParamList>();
@@ -31,6 +32,9 @@ export const StackNavigator = (props: StackNavigatorProps) => {
         name="Home"
         component={Home}
         options={{
+          headerTitleStyle: {
+            fontFamily: FontFamily.default,
+          },
           headerLeft: () => (
             <Icon
               name="navicon"
@@ -53,6 +57,9 @@ export const StackNavigator = (props: StackNavigatorProps) => {
           navigation: StackNavigationProp<StackNavigatorParamList, 'Capture'>;
         }) => ({
           headerTransparent: true,
+          headerTitleStyle: {
+            fontFamily: FontFamily.default,
+          },
           title: 'Scanning',
           headerTintColor: 'white',
           headerLeft: () => (
@@ -69,7 +76,27 @@ export const StackNavigator = (props: StackNavigatorProps) => {
       <Stack.Screen
         name="CheckIngredients"
         component={CheckIngredients}
-        options={{title: 'Ingredientes no APV'}}
+        options={({
+          navigation,
+        }: {
+          navigation: StackNavigationProp<
+            StackNavigatorParamList,
+            'CheckIngredients'
+          >;
+        }) => ({
+          headerTransparent: true,
+          title: '',
+          headerTintColor: 'white',
+          headerLeft: () => (
+            <Icon
+              name="chevron-left"
+              type="evilicon"
+              color="white"
+              size={42}
+              onPress={() => navigation.goBack()}
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );
