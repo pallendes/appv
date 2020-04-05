@@ -104,7 +104,7 @@ export const Capture = ({navigation}: CaptureProps) => {
         containerStyle={styles.scanButtonContainer}
         onPress={() => setIsScanning(true)}
         loading={isScanning}
-        icon={<Icon name="ios-home" size={52} color="white" />}
+        icon={<Icon name="scan1" type="antdesign" size={38} color="white" />}
       />
     </View>
   );

@@ -16,7 +16,7 @@ export type StackNavigatorParamList = {
   Login: undefined;
   Home: undefined;
   Capture: undefined;
-  CheckIngredients: {captureUri: string; recognizedText: string | string[]};
+  CheckIngredients: {captureUri: string; recognizedText: string[]};
 };
 
 const Stack = createStackNavigator<StackNavigatorParamList>();

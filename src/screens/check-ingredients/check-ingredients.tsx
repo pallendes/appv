@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -11,30 +11,31 @@ import {Image, Text, Divider, Icon} from 'react-native-elements';
 import {Grid, Row, Col} from 'react-native-easy-grid';
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigatorParamList} from '@navigations/stack-navigator';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {Colors} from '@styles/colors';
+import {findIngredients} from '@services/ingredients';
 
 type CheckIngredientsScreenRouteProp = RouteProp<
   StackNavigatorParamList,
   'CheckIngredients'
 >;
 
-type CheckIngredientsNavigationProp = StackNavigationProp<
-  StackNavigatorParamList,
-  'CheckIngredients'
->;
-
 interface CheckIngredientsProps {
   route: CheckIngredientsScreenRouteProp;
-  navigation: CheckIngredientsNavigationProp;
 }
 
-export const CheckIngredients = ({
-  route,
-  navigation,
-}: CheckIngredientsProps) => {
+export const CheckIngredients = ({route}: CheckIngredientsProps) => {
   const defaultImage =
     'https://via.placeholder.com/600x600/000.png?text=image+no+disponible';
+
+  useEffect(() => {
+    const getNotFitForVeganIngredients = async () => {
+      const {recognizedText} = route.params;
+
+      await findIngredients(recognizedText.join(' '));
+    };
+
+    getNotFitForVeganIngredients();
+  });
 
   let recognizedText = 'asdasda';
 
@@ -58,7 +59,7 @@ export const CheckIngredients = ({
     <Grid>
       <Row size={45}>
         <Image
-          source={{uri: defaultImage}}
+          source={{uri: route.params.captureUri || defaultImage}}
           containerStyle={styles.imageContainer}
           PlaceholderContent={<ActivityIndicator />}
         />
