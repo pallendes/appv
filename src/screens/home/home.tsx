@@ -1,42 +1,44 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import {Text, Input, Icon, Card, Button} from 'react-native-elements';
 import {Grid, Row, Col} from 'react-native-easy-grid';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '@navigations/root-navigator';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<
+  StackNavigatorParamList,
+  'Home'
+>;
 
 interface HomeProps {
   navigation: HomeScreenNavigationProp;
 }
 
 const Home = ({navigation}: HomeProps) => {
-  return (
-    <>
-      <SafeAreaView>
+  const component = (
+    <Grid>
+      <Row size={87}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           style={styles.scrollView}>
           <Grid>
-            <Row>
-              <Text h2>Hola Pablo,</Text>
+            <Row style={styles.row}>
+              <Text h1 h1Style={styles.title}>
+                Hola Pablo, ¿Qué ingredientes quieres consultar?
+              </Text>
             </Row>
             <Row style={styles.row}>
-              <Text h2>¿Qué ingredientes quieres consultar?</Text>
-            </Row>
-            <Row style={styles.row}>
-              <Col size={90}>
-                <Input placeholder="Escribe algo..." />
-              </Col>
-              <Col size={10}>
-                <Icon
-                  name="search"
-                  type="evilicon"
-                  containerStyle={styles.searchButton}
-                />
-              </Col>
+              <Input
+                placeholder="Escribe algo..."
+                rightIcon={
+                  <Icon
+                    name="search"
+                    type="evilicon"
+                    containerStyle={styles.searchButton}
+                  />
+                }
+              />
             </Row>
             <Row style={styles.row}>
               <Text style={styles.boldText}>Buscados anteriormente:</Text>
@@ -45,8 +47,7 @@ const Home = ({navigation}: HomeProps) => {
               <ScrollView
                 alwaysBounceHorizontal
                 horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.horizontalScrollView}>
+                showsHorizontalScrollIndicator={false}>
                 <Col>
                   <Card
                     image={{uri: 'https://via.placeholder.com/150'}}
@@ -88,8 +89,7 @@ const Home = ({navigation}: HomeProps) => {
               <ScrollView
                 alwaysBounceHorizontal
                 horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.horizontalScrollView}>
+                showsHorizontalScrollIndicator={false}>
                 <Col>
                   <Card
                     image={{uri: 'https://via.placeholder.com/150'}}
@@ -126,38 +126,39 @@ const Home = ({navigation}: HomeProps) => {
             </Row>
           </Grid>
         </ScrollView>
-        <Grid>
-          <Row>
-            <Col style={styles.scanButtonContainer}>
-              <Button
-                accessible
-                accessibilityLabel="Abrir camara"
-                onPress={() => navigation.navigate('Capture')}
-                buttonStyle={styles.scanButton}
-                icon={
-                  <Icon name="camera" type="evilicon" size={52} color="white" />
-                }
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </SafeAreaView>
-    </>
+      </Row>
+      <Row size={12} style={styles.bottomBar}>
+        <Button
+          accessible
+          accessibilityLabel="Abrir camara"
+          onPress={() => navigation.navigate('Capture')}
+          buttonStyle={styles.scanButton}
+          icon={<Icon name="camera" type="evilicon" size={52} color="white" />}
+        />
+      </Row>
+    </Grid>
   );
+
+  return component;
 };
 
 const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
   },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
   scrollView: {
+    flex: 1,
     backgroundColor: 'white',
     padding: 10,
     paddingBottom: 24,
-    height: '90%',
   },
   row: {
     paddingBottom: 26,
+    paddingLeft: 12,
   },
   card: {
     width: 200,
@@ -179,23 +180,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center',
   },
-  horizontalScrollView: {},
-  scanButtonContainer: {
+  scanButton: {
+    borderWidth: 4,
+    borderColor: 'white',
+    borderRadius: 160,
+    width: 80,
+    height: 80,
+  },
+  bottomBar: {
     backgroundColor: 'white',
-    height: 100,
+    height: '100%',
+    width: '100%',
     marginBottom: 12,
     paddingTop: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    // position: 'absolute',
-    // right: '50%',
-    // marginRight: -37,
-    // bottom: 32,
-  },
-  scanButton: {
-    borderRadius: 50,
-    width: 68,
+    alignContent: 'center',
   },
 });
 

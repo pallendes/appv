@@ -51,11 +51,15 @@
       "*": ["./src/*"],
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
-      "@atoms/*": ["./src/components/atoms/*"],
+      "@atoms": ["./src/components/atoms/*"],
+      "@molecules": ["./src/components/molecules/*"],
+      "@organisms": ["./src/components/organisms/*"],
       "@navigations/*": ["./src/navigations/*"],
       "@screens/*": ["./src/screens/*"],
       "@services/*": ["./src/services/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@store/*": ["./src/store/*"],
+      "@app-context/*": ["./src/app-context/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [

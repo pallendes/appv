@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Your message to user when the camera is accessed for the first time</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your message to user when the microphone is accessed for the first time</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -65,6 +65,12 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Oswald-Regular_Bold.ttf</string>
+		<string>Oswald-Regular_ExtraLight.ttf</string>
+		<string>Oswald-Regular_Light.ttf</string>
+		<string>Oswald-Regular_Medium.ttf</string>
+		<string>Oswald-Regular_SemiBold.ttf</string>
+		<string>Oswald-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

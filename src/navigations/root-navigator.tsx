@@ -1,70 +1,31 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
+import {RootState} from '@store/root-reducer';
+import {Login} from '@screens/login';
+import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {
-  createStackNavigator,
-  StackNavigationProp,
-} from '@react-navigation/stack';
-import {Icon, Avatar} from 'react-native-elements';
 
-import {Home} from '@screens/home';
-import {Capture} from '@screens/capture';
-import {CheckIngredients} from '@screens/check-ingredients';
+import {DrawerNavigator} from './drawer-navigator';
 
-export type RootStackParamList = {
-  Home: undefined;
-  Capture: undefined;
-  CheckIngredients: {captureUri: string; recognizedText: string[]};
+type RootStackParamList = {
+  App: undefined;
+  Login: undefined;
 };
 
-const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
+  const {isUserLogged} = useSelector((state: RootState) => state.app);
+
   return (
     <NavigationContainer>
-      <Navigator initialRouteName="Home">
-        <Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: '',
-            headerLeft: () => <Icon name="navicon" type="evilicon" size={42} />,
-            headerRight: () => (
-              <Avatar rounded title="PA" containerStyle={styles.avatar} />
-            ),
-          }}
-        />
-        <Screen
-          name="Capture"
-          component={Capture}
-          options={({
-            navigation,
-          }: {
-            navigation: StackNavigationProp<RootStackParamList, 'Capture'>;
-          }) => ({
-            title: 'Scanning',
-            headerLeft: () => (
-              <Icon
-                name="chevron-left"
-                type="evilicon"
-                size={42}
-                onPress={() => navigation.goBack()}
-              />
-            ),
-          })}
-        />
-        <Screen
-          name="CheckIngredients"
-          component={CheckIngredients}
-          options={{title: 'Ingredientes no APV'}}
-        />
-      </Navigator>
+      <RootStack.Navigator headerMode="none">
+        {isUserLogged ? (
+          <RootStack.Screen name="App" component={DrawerNavigator} />
+        ) : (
+          <RootStack.Screen name="Login" component={Login} />
+        )}
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  avatar: {
-    marginRight: 12,
-  },
-});

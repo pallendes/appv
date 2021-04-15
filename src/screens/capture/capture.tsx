@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {Button, Icon, Text} from 'react-native-elements';
-import {Grid, Col, Row} from 'react-native-easy-grid';
+import {StyleSheet, View} from 'react-native';
+import {Grid, Row} from 'react-native-easy-grid';
 import {RNCamera, TrackedTextFeature} from 'react-native-camera';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../navigations/root-navigator';
+import {StackNavigatorParamList} from '@navigations/stack-navigator';
+import {Colors} from '@styles/colors';
+import {Button, Icon} from 'react-native-elements';
 
 type CaptureScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  StackNavigatorParamList,
   'Capture'
 >;
 
@@ -17,14 +18,22 @@ interface CaptureProps {
 
 export const Capture = ({navigation}: CaptureProps) => {
   const cameraRef = useRef<RNCamera>(null);
-  const [trackedText, setTrackedText] = useState<TrackedTextFeature[]>([]);
+  const [trackedText, setTrackedText] = useState<TrackedTextFeature[] | null>(
+    null,
+  );
+  const [isScanning, setIsScanning] = useState<boolean>(false);
 
   const takePicture = async () => {
-    if (cameraRef && cameraRef.current) {
+    if (trackedText && cameraRef && cameraRef.current) {
       const options = {quality: 0.5, base64: true};
       const {uri} = await cameraRef.current.takePictureAsync(options);
 
-      const recognizedText = trackedText.map(item => item.value);
+      const recognizedText = trackedText.map(
+        (item: TrackedTextFeature) => item.value,
+      );
+
+      setIsScanning(false);
+      setTrackedText(null);
 
       navigation.navigate('CheckIngredients', {
         captureUri: uri,
@@ -33,35 +42,37 @@ export const Capture = ({navigation}: CaptureProps) => {
     }
   };
 
-  const renderTextBlocks = () => (
-    <View style={styles.facesContainer} pointerEvents="none">
-      {trackedText.map(renderTextBlock)}
-    </View>
-  );
+  const renderTextBlocks = () => {
+    if (!trackedText || trackedText.length === 0) {
+      return null;
+    }
 
-  const renderTextBlock = ({
-    bounds,
-    value,
-  }: Pick<TrackedTextFeature, 'bounds' | 'value'>) => (
-    <React.Fragment key={value + bounds.origin.x}>
-      <Text
-        style={[
-          styles.textBlock,
-          {left: bounds.origin.x, top: bounds.origin.y},
-        ]}
-      />
-      <View
-        style={[
-          styles.text,
-          {
-            ...bounds.size,
-            left: bounds.origin.x,
-            top: bounds.origin.y,
-          },
-        ]}
-      />
-    </React.Fragment>
-  );
+    return (
+      <View style={styles.reconizedTextContainer} pointerEvents="none">
+        {trackedText.map((item: TrackedTextFeature) => {
+          const {bounds, value} = item;
+
+          const isIngredientsBlock =
+            value.toLowerCase().includes('ingredients') ||
+            value.toLocaleLowerCase().includes('ingredientes');
+
+          return (
+            <View
+              style={[
+                styles.reconizedText,
+                isIngredientsBlock && styles.ingredientsText,
+                {
+                  ...bounds.size,
+                  left: bounds.origin.x,
+                  top: bounds.origin.y,
+                },
+              ]}
+            />
+          );
+        })}
+      </View>
+    );
+  };
 
   const onTextRecognized = ({
     textBlocks,
@@ -69,76 +80,76 @@ export const Capture = ({navigation}: CaptureProps) => {
     textBlocks: TrackedTextFeature[];
   }): void => {
     setTrackedText(textBlocks);
+    takePicture();
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Grid>
-        <Row size={90}>
+        <Row>
           <RNCamera
             ref={cameraRef}
             style={styles.cameraContainer}
-            onTextRecognized={onTextRecognized}
+            onTextRecognized={isScanning ? onTextRecognized : undefined}
+            flashMode="auto"
+            autoFocus="on"
           />
           {renderTextBlocks()}
         </Row>
-        <Row size={10}>
-          <Col style={styles.scanButtonContainer}>
-            <Button
-              accessible
-              accessibilityLabel="Capturar imagen"
-              buttonStyle={styles.scanButton}
-              onPress={takePicture}
-              icon={
-                <Icon name="camera" type="evilicon" size={52} color="white" />
-              }
-            />
-          </Col>
-        </Row>
       </Grid>
-    </SafeAreaView>
+      <Button
+        accessible
+        accessibilityLabel="Capturar imagen"
+        buttonStyle={styles.scanButton}
+        containerStyle={styles.scanButtonContainer}
+        onPress={() => setIsScanning(true)}
+        loading={isScanning}
+        icon={<Icon name="scan1" type="antdesign" size={38} color="white" />}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   scanButtonContainer: {
-    backgroundColor: 'white',
-    height: 100,
-    marginBottom: 12,
-    paddingTop: 12,
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    marginBottom: 54,
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
   },
   scanButton: {
-    borderRadius: 50,
-    width: 68,
+    borderWidth: 4,
+    borderColor: 'white',
+    borderRadius: 160,
+    width: 80,
+    height: 80,
   },
   cameraContainer: {
     flex: 1,
     width: 1,
   },
-  facesContainer: {
+  reconizedTextContainer: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
     top: 0,
   },
-  textBlock: {
-    color: '#F00',
+  reconizedText: {
+    borderWidth: 4,
+    borderRadius: 12,
     position: 'absolute',
-    textAlign: 'center',
-    backgroundColor: 'transparent',
-  },
-  text: {
-    // padding: 10,
-    borderWidth: 2,
-    borderRadius: 2,
-    position: 'absolute',
-    borderColor: '#F00',
+    borderColor: 'red',
     justifyContent: 'center',
+  },
+  ingredientsText: {
+    borderColor: Colors.primary,
   },
 });
